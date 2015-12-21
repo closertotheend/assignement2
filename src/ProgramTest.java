@@ -57,8 +57,8 @@ public class ProgramTest {
         bug.setState(Bug.State.CONFIRMED);
     }
 
-    @Test
-    public void shouldGoFromUnconfirmedToResolved() throws Exception {
+    @Test(expected = PreconditionError.class)
+    public void shouldFailGoesFromUnconfirmedToResolved() throws Exception {
         Bug bug = bug();
         bug.setState(Bug.State.RESOLVED);
     }
