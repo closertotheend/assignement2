@@ -23,6 +23,13 @@ public class ProgramTest {
     }
 
     @Test(expected = PreconditionError.class)
+    public void shouldFailIfGoesFromVerifiedToConfirmed() throws Exception {
+        Bug bug = bug();
+        bug.setState(Bug.State.VERIFIED);
+        bug.setState(Bug.State.CONFIRMED);
+    }
+
+    @Test(expected = PreconditionError.class)
     public void shouldFailIfGoesFromConfirmedToResolved() throws Exception {
         Bug bug = bug();
         bug.setState(Bug.State.CONFIRMED);

@@ -95,6 +95,7 @@ public class Bug implements Serializable {
 
     @Requires({
             "st == State.UNCONFIRMED? state == State.UNCONFIRMED : true",
+            "st == State.CONFIRMED? state == State.INPROGRESS || state == State.RESOLVED || state == State.UNCONFIRMED : true",
             "st == State.INPROGRESS? state == State.CONFIRMED : true",
             "st == State.RESOLVED? state == State.UNCONFIRMED || state == State.INPROGRESS : true",
             "st == State.VERIFIED? state == State.RESOLVED : true"
