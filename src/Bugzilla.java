@@ -60,6 +60,9 @@ public class Bugzilla implements Serializable {
             "members.containsKey(username) == true",
             "members.get(username).getLeft() == passwd"
     })
+    @Ensures({
+            "loggedIn.contains(username)"
+    })
     public void login(String username, String passwd) throws BugzillaException {
         loggedIn.add(username);
     }
