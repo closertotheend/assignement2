@@ -38,7 +38,7 @@ public class Bugzilla implements Serializable {
     })
     @Ensures({
             "isRegistered(old(username)) == true",
-            //...
+            "members.containsKey(username) == true"
     })
     public void register(String username, String passwd, MemberType type) throws BugzillaException {
 
@@ -54,6 +54,11 @@ public class Bugzilla implements Serializable {
     }
 
 
+    @Requires({
+            "username != null",
+            "passwd != null",
+            "members.containsKey(username) == true"
+    })
     public void login(String username, String passwd) throws BugzillaException {
 
         loggedIn.add(username);
