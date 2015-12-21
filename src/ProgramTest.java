@@ -113,7 +113,7 @@ public class ProgramTest {
         bug.setAsResolved(Bug.Resolution.UNRESOLVED,"12313");
     }
 
-    @Test(expected = InvariantError.class)
+    @Test(expected = PreconditionError.class)
     public void shouldFailIfBugWithEmptyDescription() throws Exception {
         new Bug(12, "");
         new Bug(12, null);

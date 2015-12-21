@@ -51,7 +51,8 @@ public class Bug implements Serializable {
 
     @Requires({
             "ID >= 0",
-            //...
+            "description != null",
+            "description.length() > 0"
     })
     @Ensures({
             "ID == old(id)",
