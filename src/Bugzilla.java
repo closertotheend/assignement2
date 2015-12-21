@@ -32,7 +32,8 @@ public class Bugzilla implements Serializable {
 
     @Requires({
             "username != null",
-            //...
+            "passwd != null",
+            "type != null",
             "isRegistered(username) == false"
     })
     @Ensures({

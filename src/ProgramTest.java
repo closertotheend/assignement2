@@ -15,6 +15,25 @@ public class ProgramTest {
         }
     }
 
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfRegisterHasNullValues1() throws Exception {
+        bugzilla().register(null, "asd", Bugzilla.MemberType.DEVELOPER);
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfRegisterHasNullValues2() throws Exception {
+        bugzilla().register("asd", null, Bugzilla.MemberType.DEVELOPER);
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfRegisterHasNullValues3() throws Exception {
+        bugzilla().register("asdasd", "asd", null);
+    }
+
+    @Test
+    public void shouldPassIfRegisterHasAllFields() throws Exception {
+        bugzilla().register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
+    }
 
     @Test(expected = PreconditionError.class)
     public void shouldFailIfGoesFromUnconfirmedToVerified() throws Exception {
@@ -129,7 +148,11 @@ public class ProgramTest {
 
     @Test(expected = PreconditionError.class)
     public void testRegisterNullName() throws BugzillaException {
-        new Bugzilla(false).register(null, "abc", Bugzilla.MemberType.USER);
+        bugzilla().register(null, "abc", Bugzilla.MemberType.USER);
+    }
+
+    private Bugzilla bugzilla() throws BugzillaException {
+        return new Bugzilla(false);
     }
 
     @Test(expected = PreconditionError.class)
