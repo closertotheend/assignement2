@@ -9,7 +9,9 @@ import com.google.java.contract.Requires;
 
 @Invariant({
         "ID >= 0",
-        "state != null"
+        "state != null",
+        "bugDescription != null",
+        "bugDescription.length() > 0"
 })
 /*
  * The class represents a bug in the bugs database.
@@ -135,6 +137,7 @@ public class Bug implements Serializable {
      */
     @Requires({
             "type != Resolution.UNRESOLVED",
+            "state == State.UNCONFIRMED || state == State.INPROGRESS",
             "solution != null",
             "solution.length() > 0"
     })

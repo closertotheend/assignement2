@@ -1,4 +1,5 @@
 
+import com.google.java.contract.InvariantError;
 import com.google.java.contract.PreconditionError;
 import org.junit.Test;
 
@@ -29,11 +30,11 @@ public class ProgramTest {
         bug.setState(Bug.State.CONFIRMED);
     }
 
-    @Test
+    @Test(expected = PreconditionError.class)
     public void shouldFailIfGoesFromConfirmedToResolved() throws Exception {
         Bug bug = bug();
         bug.setState(Bug.State.CONFIRMED);
-        bug.setAsResolved(Bug.Resolution.FIXED,"123");;
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");
     }
 
     @Test(expected = PreconditionError.class)
@@ -110,6 +111,12 @@ public class ProgramTest {
     public void shouldFailIfResolutionIsUnresolved() throws Exception {
         Bug bug = bug();
         bug.setAsResolved(Bug.Resolution.UNRESOLVED,"12313");
+    }
+
+    @Test(expected = InvariantError.class)
+    public void shouldFailIfBugWithEmptyDescription() throws Exception {
+        new Bug(12, "");
+        new Bug(12, null);
     }
 
     @Test(expected = PreconditionError.class)
