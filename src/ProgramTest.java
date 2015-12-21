@@ -53,6 +53,11 @@ public class ProgramTest {
     }
 
     @Test(expected = PreconditionError.class)
+    public void shouldFailIfLoginUerDoesNotExist() throws Exception {
+        bugzilla.login("asdasd", "asd");
+    }
+
+    @Test(expected = PreconditionError.class)
     public void shouldFailIfLoginHasNullValue1() throws Exception {
         bugzilla.login(null, "asd");
     }
