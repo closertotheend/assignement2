@@ -102,8 +102,14 @@ public class ProgramTest {
     @Test(expected = PreconditionError.class)
     public void shouldFailIfResolutionIsEmpty() throws Exception {
         Bug bug = bug();
-        bug.setAsResolved(Bug.Resolution.FIXED,"123");
+        bug.setAsResolved(Bug.Resolution.FIXED,"");
         bug.setAsResolved(Bug.Resolution.FIXED,null);
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfResolutionIsUnresolved() throws Exception {
+        Bug bug = bug();
+        bug.setAsResolved(Bug.Resolution.UNRESOLVED,"12313");
     }
 
     @Test(expected = PreconditionError.class)
