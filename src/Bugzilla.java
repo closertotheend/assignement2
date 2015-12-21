@@ -68,6 +68,12 @@ public class Bugzilla implements Serializable {
     }
 
 
+    @Requires({
+            "username != null"
+    })
+    @Ensures({
+            "loggedIn.contains(username) == false"
+    })
     public void logout(String username) throws BugzillaException {
 
         loggedIn.remove(username);

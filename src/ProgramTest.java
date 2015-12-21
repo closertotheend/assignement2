@@ -73,6 +73,20 @@ public class ProgramTest {
         bugzilla.login("asd", null);
     }
 
+    @Test
+    public void shouldLogout() throws Exception {
+        bugzilla.register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("asdasd", "asd");
+        bugzilla.logout("asdasd");
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldFailLogout() throws Exception {
+        bugzilla.register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("asdasd", "asd");
+        bugzilla.logout(null);
+    }
+
     /// Bug
 
     @Test(expected = PreconditionError.class)
