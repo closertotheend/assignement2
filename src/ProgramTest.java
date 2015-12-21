@@ -58,6 +58,12 @@ public class ProgramTest {
     }
 
     @Test(expected = PreconditionError.class)
+    public void shouldFailIfLoginPasswordIsIncorrect() throws Exception {
+        bugzilla.register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("asdasd", "asd1");
+    }
+
+    @Test(expected = PreconditionError.class)
     public void shouldFailIfLoginHasNullValue1() throws Exception {
         bugzilla.login(null, "asd");
     }

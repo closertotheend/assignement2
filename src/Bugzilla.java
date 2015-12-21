@@ -57,10 +57,10 @@ public class Bugzilla implements Serializable {
     @Requires({
             "username != null",
             "passwd != null",
-            "members.containsKey(username) == true"
+            "members.containsKey(username) == true",
+            "members.get(username).getLeft() == passwd"
     })
     public void login(String username, String passwd) throws BugzillaException {
-
         loggedIn.add(username);
     }
 
