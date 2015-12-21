@@ -9,7 +9,7 @@ import com.google.java.contract.Requires;
 
 @Invariant({
         "ID >= 0",
-        //...
+        "state != null"
 })
 /*
  * The class represents a bug in the bugs database.
@@ -57,7 +57,7 @@ public class Bug implements Serializable {
     })
 
 	/*
-	 * The constructor accepts the Bug ID and description
+     * The constructor accepts the Bug ID and description
 	 * BugID must not be less than 0. Description must not be empty
 	 * The bug is initialized in the state UNCONFIRMED and the resolution 
 	 * type is UNRESOLVED
@@ -94,16 +94,16 @@ public class Bug implements Serializable {
 
 
     @Requires({
-            "st == State.UNCONFIRMED? state == State.UNCONFIRMED : true",
+            "st == State.UNCONFIRMED? state == null : true",
             "st == State.CONFIRMED? state == State.INPROGRESS || state == State.RESOLVED || state == State.UNCONFIRMED : true",
             "st == State.INPROGRESS? state == State.CONFIRMED : true",
-            "st == State.RESOLVED? state == State.UNCONFIRMED || state == State.INPROGRESS : true",
+            "st == State.RESOLVED? true : true",
             "st == State.VERIFIED? state == State.RESOLVED : true"
     })
     //...
-	
+
 	/*
-	 * Sets the sate of the bug to any state other than 
+     * Sets the sate of the bug to any state other than
 	 * RESOLVED and UNCONFIRMED. A bug cannot be set to UNCONFIRMED
 	 * because it starts in that state and does not go back to it.
 	 * State RESOLVED is set by the method "setAsResolved"
@@ -133,6 +133,10 @@ public class Bug implements Serializable {
      * Solution type must not be UNRESOLVED and
      * solution description must not be empty
      */
+    @Requires({
+            "solution != null",
+            "solution.length() > 0"
+    })
     public void setAsResolved(Resolution type, String solution) throws BugStateException {
         state = State.RESOLVED;
         solutionType = type;

@@ -29,11 +29,11 @@ public class ProgramTest {
         bug.setState(Bug.State.CONFIRMED);
     }
 
-    @Test(expected = PreconditionError.class)
+    @Test
     public void shouldFailIfGoesFromConfirmedToResolved() throws Exception {
         Bug bug = bug();
         bug.setState(Bug.State.CONFIRMED);
-        bug.setState(Bug.State.RESOLVED);
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");;
     }
 
     @Test(expected = PreconditionError.class)
@@ -46,7 +46,7 @@ public class ProgramTest {
     @Test(expected = PreconditionError.class)
     public void shouldFailIfGoesFromVerifiedToUnconfirmed() throws Exception {
         Bug bug = bug();
-        bug.setState(Bug.State.RESOLVED);
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");;
         bug.setState(Bug.State.VERIFIED);
         bug.setState(Bug.State.UNCONFIRMED);
     }
@@ -75,13 +75,13 @@ public class ProgramTest {
         Bug bug = bug();
         bug.setState(Bug.State.CONFIRMED);
         bug.setState(Bug.State.INPROGRESS);
-        bug.setState(Bug.State.RESOLVED);
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");
     }
 
     @Test
     public void shouldGoFromResolvedToVerified() throws Exception {
         Bug bug = bug();
-        bug.setState(Bug.State.RESOLVED);
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");
         bug.setState(Bug.State.VERIFIED);
     }
 
@@ -95,12 +95,15 @@ public class ProgramTest {
     @Test
     public void shouldGoFromResolvedToConfirmed() throws Exception {
         Bug bug = bug();
-        bug.setState(Bug.State.RESOLVED);
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");
         bug.setState(Bug.State.CONFIRMED);
     }
 
-    private Bug bug() throws BugzillaException {
-        return new Bug(5, "testBug");
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfResolutionIsEmpty() throws Exception {
+        Bug bug = bug();
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");
+        bug.setAsResolved(Bug.Resolution.FIXED,null);
     }
 
     @Test(expected = PreconditionError.class)
@@ -147,6 +150,10 @@ public class ProgramTest {
             System.out.println(e.getErrorMsg());
 
         }
+    }
+
+    private Bug bug() throws BugzillaException {
+        return new Bug(5, "testBug");
     }
 
 }
