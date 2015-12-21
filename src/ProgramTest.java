@@ -112,6 +112,16 @@ public class ProgramTest {
         bugzilla.login("username", "pass");
         bugzilla.submitBug("username", "description");
     }
+
+    @Test
+    public void shouldConfirmBug() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("analyst", 0);
+    }
     /// Bug
 
     @Test(expected = PreconditionError.class)

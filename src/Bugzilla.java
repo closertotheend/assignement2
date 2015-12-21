@@ -108,6 +108,12 @@ public class Bugzilla implements Serializable {
     }
 
 
+    @Requires({
+            "username != null",
+            "getType(username) == MemberType.SYSTEMANALYST",
+            "isLoggedIn(username)",
+            "bugExists(bugID)"
+    })
     /*
      * The method allows a SYSTEMANALYST to confirm a bug
      */
