@@ -15,7 +15,7 @@ import com.google.java.contract.Requires;
 })
 /*
  * The class represents a bug in the bugs database.
- * The bug cannot be modified after it is VERIFIED.
+ * TODO: The bug cannot be modified after it is VERIFIED.
  */
 public class Bug implements Serializable {
 
@@ -140,7 +140,8 @@ public class Bug implements Serializable {
             "type != Resolution.UNRESOLVED",
             "state == State.UNCONFIRMED || state == State.INPROGRESS",
             "solution != null",
-            "solution.length() > 0"
+            "solution.length() > 0",
+            "state != State.VERIFIED"
     })
     public void setAsResolved(Resolution type, String solution) throws BugStateException {
         state = State.RESOLVED;

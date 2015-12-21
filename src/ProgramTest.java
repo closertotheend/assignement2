@@ -120,6 +120,14 @@ public class ProgramTest {
     }
 
     @Test(expected = PreconditionError.class)
+    public void shouldFailIfModifiedAfterVerified() throws Exception {
+        Bug bug = bug();
+        bug.setAsResolved(Bug.Resolution.FIXED,"123");
+        bug.setState(Bug.State.VERIFIED);
+        bug.setAsResolved(Bug.Resolution.FIXED,"q23234");
+    }
+
+    @Test(expected = PreconditionError.class)
     public void testRegisterNullName() {
         Bugzilla bz = null;
 
