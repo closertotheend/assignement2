@@ -72,7 +72,7 @@ public class Bugzilla implements Serializable {
             "username != null"
     })
     @Ensures({
-            "loggedIn.contains(username) == false"
+            "!isLoggedIn(username)"
     })
     public void logout(String username) throws BugzillaException {
 
