@@ -61,7 +61,7 @@ public class Bugzilla implements Serializable {
             "members.get(username).getLeft() == passwd"
     })
     @Ensures({
-            "loggedIn.contains(username)"
+            "isLoggedIn(username)"
     })
     public void login(String username, String passwd) throws BugzillaException {
         loggedIn.add(username);
@@ -81,10 +81,10 @@ public class Bugzilla implements Serializable {
 
     @Requires({
             "username != null",
-            //...
+            "description != null",
+            "description.length() > 0",
             "getType(username) == MemberType.USER",
-            //...
-
+            "isLoggedIn(username)"
     })
     @Ensures({
             "bugCount() == old(bugCount()) + 1",

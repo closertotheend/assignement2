@@ -81,10 +81,29 @@ public class ProgramTest {
     }
 
     @Test(expected = PreconditionError.class)
-    public void shouldFailLogout() throws Exception {
+    public void shouldFailLogoutBecauseOfNull() throws Exception {
         bugzilla.register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
         bugzilla.login("asdasd", "asd");
         bugzilla.logout(null);
+    }
+
+    @Test
+    public void shouldSubmitBug() throws Exception {
+        bugzilla.register("username", "pass", Bugzilla.MemberType.USER);
+        bugzilla.login("username", "pass");
+        bugzilla.submitBug("username", "description");
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotSubmitBugBecauseNotLoggedIn() throws Exception {
+        bugzilla.register("username", "pass", Bugzilla.MemberType.USER);
+        bugzilla.submitBug("username", "description");
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotSubmitBugBecauseDescriptionLengthIsZero() throws Exception {
+        bugzilla.register("username", "pass", Bugzilla.MemberType.USER);
+        bugzilla.submitBug("username", "");
     }
 
     /// Bug
