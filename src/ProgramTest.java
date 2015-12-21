@@ -29,6 +29,21 @@ public class ProgramTest {
         bug.setState(Bug.State.RESOLVED);
     }
 
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfGoesFromConfirmedToVerified() throws Exception {
+        Bug bug = bug();
+        bug.setState(Bug.State.CONFIRMED);
+        bug.setState(Bug.State.VERIFIED);
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldFailIfGoesFromVerifiedToUnconfirmed() throws Exception {
+        Bug bug = bug();
+        bug.setState(Bug.State.RESOLVED);
+        bug.setState(Bug.State.VERIFIED);
+        bug.setState(Bug.State.UNCONFIRMED);
+    }
+
     @Test
     public void shouldGoFromUnconfirmedToConfirmed() throws Exception {
         Bug bug = bug();
