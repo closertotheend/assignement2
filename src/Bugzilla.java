@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.java.contract.ThrowEnsures;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -37,8 +38,8 @@ public class Bugzilla implements Serializable {
             "isRegistered(username) == false"
     })
     @Ensures({
-            "isRegistered(old(username)) == true",
-            "members.containsKey(username) == true"
+            "isRegistered(old(username))",
+            "members.containsKey(username)"
     })
     public void register(String username, String passwd, MemberType type) throws BugzillaException {
 
