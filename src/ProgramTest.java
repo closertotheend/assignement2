@@ -202,7 +202,7 @@ public class ProgramTest {
     }
 
     @Test(expected = PreconditionError.class)
-    public void shouldNotStopDevelopmentBecauseOfWrongFlow() throws Exception {
+    public void shouldNotStopDevelopmentBecauseOfDeveloperIsNotSignedIn() throws Exception {
         bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
         bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
         bugzilla.register("developer", "pass", Bugzilla.MemberType.DEVELOPER);
@@ -216,6 +216,34 @@ public class ProgramTest {
         bugzilla.logout("developer");
 
         bugzilla.stopDevelopment("developer", 0);
+    }
+
+    @Test
+    public void shouldFixBug() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.register("developer", "pass", Bugzilla.MemberType.DEVELOPER);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.login("developer", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("analyst", 0);
+        bugzilla.startDevelopment("developer", 0);
+        bugzilla.fixedBug("developer", 0, Bug.Resolution.WONTFIX, "solution");
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotFixBugBecauseBugCanBeFixedOnlyByDeveloper() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.register("developer", "pass", Bugzilla.MemberType.DEVELOPER);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.login("developer", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("analyst", 0);
+        bugzilla.startDevelopment("developer", 0);
+        bugzilla.fixedBug("user", 0, Bug.Resolution.WONTFIX, "solution");
     }
 
     /// Bug

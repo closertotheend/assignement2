@@ -179,6 +179,20 @@ public class Bugzilla implements Serializable {
     }
 
 
+    @Requires({
+            "username != null",
+            "username.length() > 0",
+            "resType != null",
+            "bugExists(bugID)",
+            "solution != null",
+            "solution.length() > 0",
+            "isLoggedIn(username)",
+            "bugExists(bugID)",
+            "getType(username) == MemberType.DEVELOPER"
+    })
+    @Ensures({
+            "!isDeveloperAssigned(username)",
+    })
     /*
      * The method allows DEVELOPER to mark the bug as fixed
      */
