@@ -122,6 +122,17 @@ public class ProgramTest {
         bugzilla.submitBug("user", "description");
         bugzilla.confirmBug("analyst", 0);
     }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotConfirmBugBecauseOfBadRole() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("user", 0);
+    }
+
     /// Bug
 
     @Test(expected = PreconditionError.class)
