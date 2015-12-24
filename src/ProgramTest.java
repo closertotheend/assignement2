@@ -163,6 +163,30 @@ public class ProgramTest {
         bugzilla.invalidateBug(null, 0, "This is not a bug at all!");
     }
 
+    @Test
+    public void shouldIStartDevelopment() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.register("developer", "pass", Bugzilla.MemberType.DEVELOPER);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.login("developer", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("analyst", 0);
+        bugzilla.startDevelopment("developer", 0);
+    }
+
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotStartDevelopmentBecauseOfWrongFlow() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.DEVELOPER);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.startDevelopment("analyst", 0);
+    }
+
     /// Bug
 
     @Test(expected = PreconditionError.class)

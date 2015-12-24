@@ -140,6 +140,13 @@ public class Bugzilla implements Serializable {
     }
 
 
+    @Requires({
+            "username != null",
+            "username.length() > 0",
+            "getType(username) == MemberType.DEVELOPER",
+            "isLoggedIn(username)",
+            "bugExists(bugID)"
+    })
     /*
      * The method allows a DEVELOPER to start working on the bug
      */
