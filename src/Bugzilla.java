@@ -214,7 +214,6 @@ public class Bugzilla implements Serializable {
     @Requires({
             "username != null",
             "username.length() > 0",
-            "bugExists(bugID)",
             "isLoggedIn(username)",
             "bugExists(bugID)",
             "getType(username) == MemberType.QUALITYASSURANCE"
