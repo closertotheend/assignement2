@@ -280,6 +280,41 @@ public class ProgramTest {
         bugzilla.approveFix("developer", 0);
     }
 
+    @Test
+    public void shouldRejectFix() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.register("developer", "pass", Bugzilla.MemberType.DEVELOPER);
+        bugzilla.register("qa", "pass", Bugzilla.MemberType.QUALITYASSURANCE);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.login("developer", "pass");
+        bugzilla.login("qa", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("analyst", 0);
+        bugzilla.startDevelopment("developer", 0);
+        bugzilla.fixedBug("developer", 0, Bug.Resolution.FIXED, "solution");
+        bugzilla.rejectFix("qa", 0);
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldFailBecauseProgrammerCannotRejectFix() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.register("developer", "pass", Bugzilla.MemberType.DEVELOPER);
+        bugzilla.register("qa", "pass", Bugzilla.MemberType.QUALITYASSURANCE);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.login("developer", "pass");
+        bugzilla.login("qa", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.confirmBug("analyst", 0);
+        bugzilla.startDevelopment("developer", 0);
+        bugzilla.fixedBug("developer", 0, Bug.Resolution.FIXED, "solution");
+        bugzilla.rejectFix("developer", 0);
+    }
+
+
     /// Bug
 
     @Test(expected = PreconditionError.class)

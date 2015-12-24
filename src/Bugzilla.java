@@ -221,6 +221,14 @@ public class Bugzilla implements Serializable {
     /*
      * The method allows QUALITYASSURANCE to reject the bug (back to CONFIRMED)
      */
+    @Requires({
+            "username != null",
+            "username.length() > 0",
+            "bugExists(bugID)",
+            "isLoggedIn(username)",
+            "bugExists(bugID)",
+            "getType(username) == MemberType.QUALITYASSURANCE"
+    })
     public void rejectFix(String username, int bugID) throws BugStateException {
         getBug(bugID).setState(Bug.State.CONFIRMED);
     }
