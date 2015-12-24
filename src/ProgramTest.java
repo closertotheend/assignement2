@@ -133,6 +133,36 @@ public class ProgramTest {
         bugzilla.confirmBug("user", 0);
     }
 
+    @Test
+    public void shouldInvalidateBug() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.invalidateBug("analyst", 0, "This is not a bug at all!");
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotInvalidateBugBecauseOfBadRole() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.invalidateBug("user", 0, "This is not a bug at all!");
+    }
+
+    @Test(expected = PreconditionError.class)
+    public void shouldNotInvalidateBugBecauseOfNull() throws Exception {
+        bugzilla.register("user", "pass", Bugzilla.MemberType.USER);
+        bugzilla.register("analyst", "pass", Bugzilla.MemberType.SYSTEMANALYST);
+        bugzilla.login("user", "pass");
+        bugzilla.login("analyst", "pass");
+        bugzilla.submitBug("user", "description");
+        bugzilla.invalidateBug(null, 0, "This is not a bug at all!");
+    }
+
     /// Bug
 
     @Test(expected = PreconditionError.class)

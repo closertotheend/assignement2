@@ -58,7 +58,7 @@ public class Bugzilla implements Serializable {
             "username != null",
             "passwd != null",
             "members.containsKey(username) == true",
-            "members.get(username).getLeft() == passwd"
+            "getPasswd(username).equals(passwd)"
     })
     @Ensures({
             "isLoggedIn(username)"
@@ -123,6 +123,15 @@ public class Bugzilla implements Serializable {
     }
 
 
+    @Requires({
+            "username != null",
+            "username.length() > 0",
+            "solution != null",
+            "solution.length() > 0",
+            "getType(username) == MemberType.SYSTEMANALYST",
+            "isLoggedIn(username)",
+            "bugExists(bugID)"
+    })
     /*
      * The method allows a SYSTEMANALYST to invalidate a bug
      */
