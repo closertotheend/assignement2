@@ -114,6 +114,9 @@ public class Bugzilla implements Serializable {
             "isLoggedIn(username)",
             "bugExists(bugID)"
     })
+    @Ensures({
+            "getBug(bugID).getState() == Bug.State.CONFIRMED"
+    })
     /*
      * The method allows a SYSTEMANALYST to confirm a bug
      */
@@ -149,7 +152,8 @@ public class Bugzilla implements Serializable {
     })
     @Ensures({
             "isDeveloperAssigned(username)",
-            "devInProgress(username, bugID)"
+            "devInProgress(username, bugID)",
+            "getBug(bugID).getState() == Bug.State.INPROGRESS",
     })
     /*
      * The method allows a DEVELOPER to start working on the bug
@@ -169,6 +173,7 @@ public class Bugzilla implements Serializable {
     })
     @Ensures({
             "!isDeveloperAssigned(username)",
+            "getBug(bugID).getState() == Bug.State.CONFIRMED"
     })
     /*
      * The method allows a DEVELOPER to stop working on the bug
@@ -213,6 +218,10 @@ public class Bugzilla implements Serializable {
             "bugExists(bugID)",
             "getType(username) == MemberType.QUALITYASSURANCE"
     })
+    @Ensures({
+            "!isDeveloperAssigned(username)",
+            "getBug(bugID).getState() == Bug.State.VERIFIED"
+    })
     public void approveFix(String username, int bugID) throws BugStateException {
         getBug(bugID).setState(Bug.State.VERIFIED);
     }
@@ -228,6 +237,9 @@ public class Bugzilla implements Serializable {
             "isLoggedIn(username)",
             "bugExists(bugID)",
             "getType(username) == MemberType.QUALITYASSURANCE"
+    })
+    @Ensures({
+            "getBug(bugID).getState() == Bug.State.CONFIRMED"
     })
     public void rejectFix(String username, int bugID) throws BugStateException {
         getBug(bugID).setState(Bug.State.CONFIRMED);
