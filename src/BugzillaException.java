@@ -31,6 +31,7 @@ public class BugzillaException extends Exception {
         TRANSITION_TO_INPROGRESS_STATE_UNSUCCESSFUL,
 
         BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER,
+        BUG_IS_STILL_ASSIGNED_TO_DEVELOPER,
         BUG_CANNOT_START_PROGRESS
         //...
     }
@@ -57,6 +58,7 @@ public class BugzillaException extends Exception {
         msgList.put(ErrorType.BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER, "Bug was not assigned to developer :(");
 
         msgList.put(ErrorType.BUG_CANNOT_START_PROGRESS, "Bug cannot start progress");
+        msgList.put(ErrorType.BUG_IS_STILL_ASSIGNED_TO_DEVELOPER, "Bug is still assigned to developer");
     }
 
     public static void init() throws BugzillaException {

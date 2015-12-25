@@ -145,7 +145,7 @@ public class Bugzilla implements Serializable {
 
         getBug(bugID).setState(Bug.State.CONFIRMED);
 
-        if(getBug(bugID).getState() != Bug.State.CONFIRMED){
+        if (getBug(bugID).getState() != Bug.State.CONFIRMED) {
             throwBex(BugzillaException.ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL);
         }
     }
@@ -169,7 +169,7 @@ public class Bugzilla implements Serializable {
     public void invalidateBug(String username, int bugID, String solution) throws BugzillaException {
         getBug(bugID).setAsResolved(Bug.Resolution.INVALID, solution);
 
-        if(getBug(bugID).getState() != Bug.State.RESOLVED){
+        if (getBug(bugID).getState() != Bug.State.RESOLVED) {
             throwBex(BugzillaException.ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL);
         }
     }
@@ -215,16 +215,24 @@ public class Bugzilla implements Serializable {
             "isLoggedIn(username)",
             "bugExists(bugID)"
     })
-    @Ensures({
-            "!isDeveloperAssigned(username)",
-            "getBug(bugID).getState() == Bug.State.CONFIRMED"
+    @ThrowEnsures({
+            "BugzillaException", "isDeveloperAssigned(username)",
+            "BugzillaException", "getBug(bugID).getState() != Bug.State.CONFIRMED"
     })
     /*
      * The method allows a DEVELOPER to stop working on the bug
      */
-    public void stopDevelopment(String username, int bugID) throws BugStateException {
+    public void stopDevelopment(String username, int bugID) throws BugzillaException {
         getBug(bugID).setState(Bug.State.CONFIRMED);
         inProgress.remove(username);
+
+        if (isDeveloperAssigned(username)) {
+            throwBex(BugzillaException.ErrorType.BUG_IS_STILL_ASSIGNED_TO_DEVELOPER);
+        }
+
+        if (getBug(bugID).getState() != Bug.State.CONFIRMED) {
+            throwBex(BugzillaException.ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL);
+        }
     }
 
 
@@ -297,7 +305,7 @@ public class Bugzilla implements Serializable {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////
-	/*
+    /*
 	 * The following private methods can be used for the task
 	 */
 
