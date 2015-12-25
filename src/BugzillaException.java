@@ -25,7 +25,8 @@ public class BugzillaException extends Exception {
         LOGOUT_FAILED,
         USER_ALREADY_REGISTRED,
         INVALID_BUGID,
-        USER_ACTION_NOT_PERMITTED
+        USER_ACTION_NOT_PERMITTED,
+        TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL
         //...
     }
 
@@ -45,6 +46,7 @@ public class BugzillaException extends Exception {
 
         msgList.put(ErrorType.LOGOUT_FAILED, "Logout failed");
         msgList.put(ErrorType.LOGIN_FAILED, "Login failed");
+        msgList.put(ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL, "Transition to confirmed state was unsuccessful");
     }
 
     public static void init() throws BugzillaException {

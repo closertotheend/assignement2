@@ -146,7 +146,7 @@ public class Bugzilla implements Serializable {
         getBug(bugID).setState(Bug.State.CONFIRMED);
 
         if(getBug(bugID).getState() != Bug.State.CONFIRMED){
-            throwBex(BugzillaException.ErrorType.INVALID_STATE_TRANSITION);
+            throwBex(BugzillaException.ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL);
         }
     }
 
@@ -160,11 +160,18 @@ public class Bugzilla implements Serializable {
             "isLoggedIn(username)",
             "bugExists(bugID)"
     })
+    @ThrowEnsures({
+            "BugzillaException", "getBug(bugID).getState() != Bug.State.RESOLVED",
+    })
     /*
      * The method allows a SYSTEMANALYST to invalidate a bug
      */
-    public void invalidateBug(String username, int bugID, String solution) throws BugStateException {
+    public void invalidateBug(String username, int bugID, String solution) throws BugzillaException {
         getBug(bugID).setAsResolved(Bug.Resolution.INVALID, solution);
+
+        if(getBug(bugID).getState() != Bug.State.RESOLVED){
+            throwBex(BugzillaException.ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL);
+        }
     }
 
 
