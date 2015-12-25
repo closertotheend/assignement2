@@ -72,8 +72,8 @@ public class Bugzilla implements Serializable {
     public void login(String username, String passwd) throws BugzillaException {
         loggedIn.add(username);
 
-        if(!isLoggedIn(username)){
-            throwBex(BugzillaException.ErrorType.LOGOUT_FAILED);
+        if (!isLoggedIn(username)) {
+            throwBex(BugzillaException.ErrorType.LOGIN_FAILED);
         }
     }
 
@@ -81,12 +81,16 @@ public class Bugzilla implements Serializable {
     @Requires({
             "username != null"
     })
-    @Ensures({
-            "!isLoggedIn(username)"
+    @ThrowEnsures({
+            "BugzillaException", "isLoggedIn(username)"
     })
     public void logout(String username) throws BugzillaException {
 
         loggedIn.remove(username);
+
+        if (isLoggedIn(username)) {
+            throwBex(BugzillaException.ErrorType.LOGOUT_FAILED);
+        }
     }
 
     @Requires({
