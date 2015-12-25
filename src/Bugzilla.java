@@ -66,11 +66,15 @@ public class Bugzilla implements Serializable {
             "members.containsKey(username) == true",
             "getPasswd(username).equals(passwd)"
     })
-    @Ensures({
-            "isLoggedIn(username)"
+    @ThrowEnsures({
+            "BugzillaException", "!isLoggedIn(username)"
     })
     public void login(String username, String passwd) throws BugzillaException {
         loggedIn.add(username);
+
+        if(!isLoggedIn(username)){
+            throwBex(BugzillaException.ErrorType.LOGOUT_FAILED);
+        }
     }
 
 

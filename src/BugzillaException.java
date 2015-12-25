@@ -21,6 +21,7 @@ public class BugzillaException extends Exception {
 
         USERNAME_NULL,
         PASSWORD_NULL,
+        LOGIN_FAILED,
         LOGOUT_FAILED,
         USER_ALREADY_REGISTRED,
         INVALID_BUGID,
@@ -43,6 +44,7 @@ public class BugzillaException extends Exception {
         msgList.put(ErrorType.USER_ACTION_NOT_PERMITTED, "User does not have permission for this action");
 
         msgList.put(ErrorType.LOGOUT_FAILED, "Logout failed");
+        msgList.put(ErrorType.LOGIN_FAILED, "Login failed");
     }
 
     public static void init() throws BugzillaException {
