@@ -247,15 +247,19 @@ public class Bugzilla implements Serializable {
             "bugExists(bugID)",
             "getType(username) == MemberType.DEVELOPER"
     })
-    @Ensures({
-            "!isDeveloperAssigned(username)",
+    @ThrowEnsures({
+            "BugzillaException", "isDeveloperAssigned(username)",
     })
     /*
      * The method allows DEVELOPER to mark the bug as fixed
      */
-    public void fixedBug(String username, int bugID, Bug.Resolution resType, String solution) throws BugStateException {
+    public void fixedBug(String username, int bugID, Bug.Resolution resType, String solution) throws BugzillaException {
         getBug(bugID).setAsResolved(resType, solution);
         inProgress.remove(username);
+
+        if (isDeveloperAssigned(username)) {
+            throwBex(BugzillaException.ErrorType.BUG_IS_STILL_ASSIGNED_TO_DEVELOPER);
+        }
     }
 
 
