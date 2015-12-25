@@ -273,12 +273,20 @@ public class Bugzilla implements Serializable {
             "bugExists(bugID)",
             "getType(username) == MemberType.QUALITYASSURANCE"
     })
-    @Ensures({
-            "!isDeveloperAssigned(username)",
-            "getBug(bugID).getState() == Bug.State.VERIFIED"
+    @ThrowEnsures({
+            "BugzillaException", "isDeveloperAssigned(username)",
+            "BugzillaException", "getBug(bugID).getState() != Bug.State.VERIFIED"
     })
-    public void approveFix(String username, int bugID) throws BugStateException {
+    public void approveFix(String username, int bugID) throws BugzillaException {
         getBug(bugID).setState(Bug.State.VERIFIED);
+
+        if (isDeveloperAssigned(username)) {
+            throwBex(BugzillaException.ErrorType.BUG_IS_STILL_ASSIGNED_TO_DEVELOPER);
+        }
+
+        if (getBug(bugID).getState() != Bug.State.VERIFIED) {
+            throwBex(BugzillaException.ErrorType.BUG_IS_STILL_ASSIGNED_TO_DEVELOPER);
+        }
     }
 
 

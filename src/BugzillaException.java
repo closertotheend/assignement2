@@ -29,6 +29,7 @@ public class BugzillaException extends Exception {
 
         TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL,
         TRANSITION_TO_INPROGRESS_STATE_UNSUCCESSFUL,
+        TRANSITION_TO_VERIFIED_STATE_UNSUCCESSFUL,
 
         BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER,
         BUG_IS_STILL_ASSIGNED_TO_DEVELOPER,
@@ -54,6 +55,7 @@ public class BugzillaException extends Exception {
         msgList.put(ErrorType.LOGIN_FAILED, "Login failed");
         msgList.put(ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL, "Transition to confirmed state was unsuccessful");
         msgList.put(ErrorType.TRANSITION_TO_INPROGRESS_STATE_UNSUCCESSFUL, "Transition to iin progress state was unsuccessful");
+        msgList.put(ErrorType.TRANSITION_TO_VERIFIED_STATE_UNSUCCESSFUL, "Transition to verified state was unsuccessful");
 
         msgList.put(ErrorType.BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER, "Bug was not assigned to developer :(");
 
