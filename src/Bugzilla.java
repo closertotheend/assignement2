@@ -301,11 +301,15 @@ public class Bugzilla implements Serializable {
             "bugExists(bugID)",
             "getType(username) == MemberType.QUALITYASSURANCE"
     })
-    @Ensures({
-            "getBug(bugID).getState() == Bug.State.CONFIRMED"
+    @ThrowEnsures({
+            "BugzillaException", "getBug(bugID).getState() != Bug.State.CONFIRMED"
     })
-    public void rejectFix(String username, int bugID) throws BugStateException {
+    public void rejectFix(String username, int bugID) throws BugzillaException {
         getBug(bugID).setState(Bug.State.CONFIRMED);
+
+        if (getBug(bugID).getState() != Bug.State.CONFIRMED) {
+            throwBex(BugzillaException.ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL);
+        }
     }
 
 
