@@ -182,17 +182,29 @@ public class Bugzilla implements Serializable {
             "isLoggedIn(username)",
             "bugExists(bugID)"
     })
-    @Ensures({
-            "isDeveloperAssigned(username)",
-            "devInProgress(username, bugID)",
-            "getBug(bugID).getState() == Bug.State.INPROGRESS",
+    @ThrowEnsures({
+            "BugzillaException", "!isDeveloperAssigned(username)",
+            "BugzillaException", "!devInProgress(username, bugID)",
+            "BugzillaException", "getBug(bugID).getState() != Bug.State.INPROGRESS",
     })
     /*
      * The method allows a DEVELOPER to start working on the bug
      */
-    public void startDevelopment(String username, int bugID) throws BugStateException {
+    public void startDevelopment(String username, int bugID) throws BugzillaException {
         getBug(bugID).setState(Bug.State.INPROGRESS);
         inProgress.put(username, bugID);
+
+        if (!isDeveloperAssigned(username)) {
+            throwBex(BugzillaException.ErrorType.BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER);
+        }
+
+        if (!devInProgress(username, bugID)) {
+            throwBex(BugzillaException.ErrorType.BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER);
+        }
+
+        if (getBug(bugID).getState() != Bug.State.INPROGRESS) {
+            throwBex(BugzillaException.ErrorType.TRANSITION_TO_INPROGRESS_STATE_UNSUCCESSFUL);
+        }
     }
 
 

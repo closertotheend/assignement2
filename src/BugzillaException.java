@@ -26,7 +26,12 @@ public class BugzillaException extends Exception {
         USER_ALREADY_REGISTRED,
         INVALID_BUGID,
         USER_ACTION_NOT_PERMITTED,
-        TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL
+
+        TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL,
+        TRANSITION_TO_INPROGRESS_STATE_UNSUCCESSFUL,
+
+        BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER,
+        BUG_CANNOT_START_PROGRESS
         //...
     }
 
@@ -47,6 +52,11 @@ public class BugzillaException extends Exception {
         msgList.put(ErrorType.LOGOUT_FAILED, "Logout failed");
         msgList.put(ErrorType.LOGIN_FAILED, "Login failed");
         msgList.put(ErrorType.TRANSITION_TO_CONFIRMED_STATE_UNSUCCESSFUL, "Transition to confirmed state was unsuccessful");
+        msgList.put(ErrorType.TRANSITION_TO_INPROGRESS_STATE_UNSUCCESSFUL, "Transition to iin progress state was unsuccessful");
+
+        msgList.put(ErrorType.BUG_WAS_NOT_ASSIGNED_TO_DEVELOPER, "Bug was not assigned to developer :(");
+
+        msgList.put(ErrorType.BUG_CANNOT_START_PROGRESS, "Bug cannot start progress");
     }
 
     public static void init() throws BugzillaException {
