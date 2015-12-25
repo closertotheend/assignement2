@@ -20,6 +20,8 @@ public class BugzillaException extends Exception {
         INVALID_STATE_TRANSITION,
 
         USERNAME_NULL,
+        PASSWORD_NULL,
+        LOGOUT_FAILED,
         USER_ALREADY_REGISTRED,
         INVALID_BUGID,
         USER_ACTION_NOT_PERMITTED
@@ -35,10 +37,12 @@ public class BugzillaException extends Exception {
         msgList.put(ErrorType.INVALID_STATE_TRANSITION, "Error: Bug state cannot be changed from %s to %s");
 
         msgList.put(ErrorType.USERNAME_NULL, "Error: Object username is null");
+        msgList.put(ErrorType.PASSWORD_NULL, "Error: Object password is null");
         msgList.put(ErrorType.USER_ALREADY_REGISTRED, "User exists with this username");
         msgList.put(ErrorType.INVALID_BUGID, "Error: Invalid bug ID");
         msgList.put(ErrorType.USER_ACTION_NOT_PERMITTED, "User does not have permission for this action");
-        //...
+
+        msgList.put(ErrorType.LOGOUT_FAILED, "Logout failed");
     }
 
     public static void init() throws BugzillaException {

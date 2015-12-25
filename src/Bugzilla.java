@@ -37,14 +37,19 @@ public class Bugzilla implements Serializable {
             "type != null",
             "isRegistered(username) == false"
     })
-    @Ensures({
-            "isRegistered(old(username))",
-            "members.containsKey(username)"
+    @ThrowEnsures({
+            "BugzillaException", "isRegistered(old(username))",
+            "BugzillaException", "username != null",
+            "BugzillaException", "passwd != null",
     })
     public void register(String username, String passwd, MemberType type) throws BugzillaException {
 
         if (username == null) {
             throwBex(BugzillaException.ErrorType.USERNAME_NULL);
+        }
+
+        if (passwd == null) {
+            throwBex(BugzillaException.ErrorType.PASSWORD_NULL);
         }
 
         if (isRegistered(username)) {

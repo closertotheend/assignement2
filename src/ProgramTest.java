@@ -1,4 +1,5 @@
 
+import com.google.java.contract.PostconditionError;
 import com.google.java.contract.PreconditionError;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,22 +35,6 @@ public class ProgramTest {
     @Test(expected = PreconditionError.class)
     public void shouldFailIfRegisterHasNullValues2() throws Exception {
         bugzilla.register("asd", null, Bugzilla.MemberType.DEVELOPER);
-    }
-
-    @Test(expected = PreconditionError.class)
-    public void shouldFailIfRegisterHasNullValues3() throws Exception {
-        bugzilla.register("asdasd", "asd", null);
-    }
-
-    @Test
-    public void shouldPassIfRegisterHasAllFields() throws Exception {
-        bugzilla.register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
-    }
-
-    @Test
-    public void shouldPassIfLoginHasAllFieldsAndUser() throws Exception {
-        bugzilla.register("asdasd", "asd", Bugzilla.MemberType.SYSTEMANALYST);
-        bugzilla.login("asdasd", "asd");
     }
 
     @Test(expected = PreconditionError.class)
