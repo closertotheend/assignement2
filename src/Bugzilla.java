@@ -104,8 +104,12 @@ public class Bugzilla implements Serializable {
             "bugCount() == old(bugCount()) + 1",
             //...
     })
+    @ThrowEnsures({
+            "BugzillaException", "username == null",
+            "BugzillaException", "getType(username) != MemberType.USER"
+    })
     /*
-	 * The method allows a USER to submit a new bug
+     * The method allows a USER to submit a new bug
 	 */
     public void submitBug(String username, String description) throws BugzillaException {
 
@@ -131,12 +135,19 @@ public class Bugzilla implements Serializable {
     @Ensures({
             "getBug(bugID).getState() == Bug.State.CONFIRMED"
     })
+    @ThrowEnsures({
+            "BugzillaException", "getBug(bugID).getState() != Bug.State.CONFIRMED",
+    })
     /*
      * The method allows a SYSTEMANALYST to confirm a bug
      */
     public void confirmBug(String username, int bugID) throws BugzillaException {
 
         getBug(bugID).setState(Bug.State.CONFIRMED);
+
+        if(getBug(bugID).getState() != Bug.State.CONFIRMED){
+            throwBex(BugzillaException.ErrorType.INVALID_STATE_TRANSITION);
+        }
     }
 
 
